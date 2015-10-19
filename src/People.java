@@ -1,9 +1,7 @@
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Created by MattBrown on 10/19/15.
@@ -13,17 +11,17 @@ public class People {
 
         HashMap<String, ArrayList<Person>> pplInfo = new HashMap();
         String postContent = readFile("people.csv"); //add your read file...dont need a write file
-        String lines[] = postContent.split("/n");
+        String lines[] = postContent.split("\n");
 
-        for (String line : lines) {//this is looping over the information that I'm adding to the array list
-            String columns[] = line.split("/,");
+        for (int i = 1; i < lines.length; i++) {//this is looping over the information that I'm adding to the array list
+            String columns[] = lines[i].split(",");//i added to indicate the positional start of the list
             int posNum = Integer.valueOf(columns[0]);
             String firstName = columns[1];
             String lastName = columns[2];
             String email = columns[3];
             String country = columns[4];
             String iP = columns[5];
-            String searchLast = lastName;
+            String searchLast = country;
             Person newPerson = new Person(posNum, firstName, lastName, email, country, iP);
             ArrayList<Person> list = pplInfo.get(searchLast);
             if (list == null) {
@@ -33,6 +31,11 @@ public class People {
             } else {
                 list.add(newPerson);
             }
+            System.out.println(pplInfo);
+        }
+
+        for (ArrayList<Person> list : pplInfo.values()) {   //looping
+            Collections.sort(list);
         }
 
         Scanner scanner = new Scanner(System.in);
@@ -40,6 +43,7 @@ public class People {
         String name = scanner.nextLine();
         ArrayList<Person> numList = pplInfo.get(name);
         String newFile = String.format("%s_pplInfo", name);
+        //System.out.println("This is your list", );
 
         if (pplInfo.containsKey(name)) {
             String contents = "";
